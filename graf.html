@@ -1,0 +1,349 @@
+<html>
+
+<head>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<style>
+		.btn-default {
+			background-color: "#2ca25f";
+			border: none;
+			color: rgb(19, 18, 18);
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			position: relative;
+			left: 100px;
+			top: 40px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="option">
+		<input name="updateButton" class="btn btn-default" type="button" value="Update" onclick="updateData()" />
+	</div>
+
+	<script>
+
+		var data =
+			[
+				{ "Country": "Andorra", "Restaurants": 2 },
+				{ "Country": "Argentina", "Restaurants": 209 },
+				{ "Country": "Aruba", "Restaurants": 4 },
+				{ "Country": "Australia", "Restaurants": 920 },
+				{ "Country": "Austria", "Restaurants": 196 },
+				{ "Country": "Azerbaijan", "Restaurants": 12 },
+				{ "Country": "Bahamas", "Restaurants": 3 },
+				{ "Country": "Bahrain", "Restaurants": 20 },
+				{ "Country": "Belarus", "Restaurants": 13 },
+				{ "Country": "Belgium", "Restaurants": 74 },
+				{ "Country": "Bolivia", "Restaurants": 1 },
+				{ "Country": "Bonaire", "Restaurants": 3.33 },
+				{ "Country": "Bosnia and Herzegovina", "Restaurants": 4 },
+				{ "Country": "Brazil", "Restaurants": 812 },
+				{ "Country": "Brunei", "Restaurants": 2 },
+				{ "Country": "Bulgaria", "Restaurants": 42 },
+				{ "Country": "Canada", "Restaurants": 1450 },
+				{ "Country": "Chile", "Restaurants": 77 },
+				{ "Country": "China", "Restaurants": 2391 },
+				{ "Country": "Colombia", "Restaurants": 81 },
+				{ "Country": "Costa Rica", "Restaurants": 54 },
+				{ "Country": "Croatia", "Restaurants": 30 },
+				{ "Country": "Cuba", "Restaurants": 1 },
+				{ "Country": "Curaçao", "Restaurants": 5 },
+				{ "Country": "Cyprus", "Restaurants": 18 },
+				{ "Country": "Czech Republic", "Restaurants": 95 },
+				{ "Country": "Denmark", "Restaurants": 89 },
+				{ "Country": "Dominican Republic", "Restaurants": 31 },
+				{ "Country": "Ecuador", "Restaurants": 27 },
+				{ "Country": "Egypt", "Restaurants": 100 },
+				{ "Country": "El Salvador", "Restaurants": 13 },
+				{ "Country": "Estonia", "Restaurants": 10 },
+				{ "Country": "Fiji", "Restaurants": 4 },
+				{ "Country": "Finland", "Restaurants": 65 },
+				{ "Country": "France", "Restaurants": 1419 },
+				{ "Country": "French Guiana", "Restaurants": 2 },
+				{ "Country": "French Polynesia", "Restaurants": 6 },
+				{ "Country": "Georgia", "Restaurants": 11 },
+				{ "Country": "Germany", "Restaurants": 1470 },
+				{ "Country": "Gibraltar", "Restaurants": 1 },
+				{ "Country": "Greece", "Restaurants": 24 },
+				{ "Country": "Guadeloupe", "Restaurants": 8 },
+				{ "Country": "Guam", "Restaurants": 6 },
+				{ "Country": "Guatemala", "Restaurants": 82 },
+				{ "Country": "Honduras", "Restaurants": 8 },
+				{ "Country": "Hong Kong", "Restaurants": 237 },
+				{ "Country": "Hungary", "Restaurants": 90 },
+				{ "Country": "India", "Restaurants": 290 },
+				{ "Country": "Indonesia", "Restaurants": 170 },
+				{ "Country": "Iraq", "Restaurants": 1 },
+				{ "Country": "Ireland", "Restaurants": 89 },
+				{ "Country": "Isle Of Man", "Restaurants": 1 },
+				{ "Country": "Israel", "Restaurants": 185 },
+				{ "Country": "Italy", "Restaurants": 548 },
+				{ "Country": "Japan", "Restaurants": 2957 },
+				{ "Country": "Jersey", "Restaurants": 1 },
+				{ "Country": "Jordan", "Restaurants": 28 },
+				{ "Country": "Kazakhstan", "Restaurants": 9 },
+				{ "Country": "Kuwait", "Restaurants": 75 },
+				{ "Country": "Latvia", "Restaurants": 12 },
+				{ "Country": "Lebanon", "Restaurants": 33 },
+				{ "Country": "Liechestein", "Restaurants": 3 },
+				{ "Country": "Lithuania", "Restaurants": 11 },
+				{ "Country": "Luxembourg", "Restaurants": 10 },
+				{ "Country": "Malaysia", "Restaurants": 314 },
+				{ "Country": "Malta", "Restaurants": 10 },
+				{ "Country": "Martinique", "Restaurants": 9 },
+				{ "Country": "Mauritania", "Restaurants": 7 },
+				{ "Country": "Mexico", "Restaurants": 402 },
+				{ "Country": "Moldova", "Restaurants": 4 },
+				{ "Country": "Monaco", "Restaurants": 2 },
+				{ "Country": "Morocco", "Restaurants": 40 },
+				{ "Country": "Netherlands", "Restaurants": 245 },
+				{ "Country": "New Caledonia", "Restaurants": 2 },
+				{ "Country": "New Zealand", "Restaurants": 162 },
+				{ "Country": "Nicaragua", "Restaurants": 6 },
+				{ "Country": "North Korea", "Restaurants": 5 },
+				{ "Country": "Nothern Marianis", "Restaurants": 2 },
+				{ "Country": "Norway", "Restaurants": 73 },
+				{ "Country": "Oman", "Restaurants": 15 },
+				{ "Country": "Pakistan", "Restaurants": 72 },
+				{ "Country": "Panama", "Restaurants": 57 },
+				{ "Country": "Paraguay", "Restaurants": 11 },
+				{ "Country": "Peru", "Restaurants": 40 },
+				{ "Country": "Philippines", "Restaurants": 572 },
+				{ "Country": "Poland", "Restaurants": 400 },
+				{ "Country": "Portugal", "Restaurants": 148 },
+				{ "Country": "Puerto Rico", "Restaurants": 108 },
+				{ "Country": "Qatar", "Restaurants": 25 },
+				{ "Country": "Reunion", "Restaurants": 1419 },
+				{ "Country": "Romania", "Restaurants": 70 },
+				{ "Country": "Russia", "Restaurants": 645 },
+				{ "Country": "Samoa", "Restaurants": 1 },
+				{ "Country": "San Marino", "Restaurants": 1 },
+				{ "Country": "Saudi Arabia", "Restaurants": 224 },
+				{ "Country": "Serbia", "Restaurants": 30 },
+				{ "Country": "Singapore", "Restaurants": 136 },
+				{ "Country": "Sint Maarten", "Restaurants": 3 },
+				{ "Country": "Slovakia", "Restaurants": 30 },
+				{ "Country": "Slovenia", "Restaurants": 20 },
+				{ "Country": "South Africa", "Restaurants": 225 },
+				{ "Country": "South Korea", "Restaurants": 450 },
+				{ "Country": "Spain", "Restaurants": 497 },
+				{ "Country": "Sri Lanka", "Restaurants": 7 },
+				{ "Country": "Suriname", "Restaurants": 2 },
+				{ "Country": "Sweden", "Restaurants": 225 },
+				{ "Country": "Switzerland", "Restaurants": 162 },
+				{ "Country": "Taiwan", "Restaurants": 413 },
+				{ "Country": "Thailand", "Restaurants": 240 },
+				{ "Country": "Trinidad and Tobago", "Restaurants": 6 },
+				{ "Country": "Tunisia", "Restaurants": 1 },
+				{ "Country": "Turkey", "Restaurants": 255 },
+				{ "Country": "Ukraine", "Restaurants": 80 },
+				{ "Country": "United Arab Emirates", "Restaurants": 114 },
+				{ "Country": "United Kingdom", "Restaurants": 1274 },
+				{ "Country": "United States", "Restaurants": 14146 },
+				{ "Country": "Uruguay", "Restaurants": 21 },
+				{ "Country": "Venezuela", "Restaurants": 140 },
+				{ "Country": "Vietnam", "Restaurants": 17 }]
+
+		var data = data.sort(function (a, b) { return b.Restaurants - a.Restaurants; });
+		var dataWithoutSad = JSON.parse(JSON.stringify(data));
+		dataWithoutSad.splice(0, 1);
+
+		var margin = { top: 120, bottom: 370, left: 100, right: 120 };
+		var width = 2500 - margin.left - margin.right;
+		var height = 800 - margin.top - margin.bottom;
+		var barPadding = 4;
+		var barWidth = width / data.length - barPadding;
+
+		var x = d3.scale.ordinal()
+			.domain(data.map(function (d) { return d.Country; }))
+			.rangeRoundBands([0, width], 0.2);
+		var y = d3.scale.linear()
+			.domain([0, d3.max(data, function (d) { return d.Restaurants; })])
+			.range([height, 0]);
+		//var c10 = d3.scale.category10();
+		var myColor = d3.scale.ordinal()
+			.domain([0, d3.max(dataWithoutSad, function (d) { return d.Country; })])
+			.range(["#e5f5f9", "#99d8c9", "#2ca25f"])
+
+		//definiranje osi
+		var xAxis = d3.svg.axis()
+			.scale(x)
+			.orient("bottom")
+
+		var yAxis = d3.svg.axis()
+			.scale(y)
+			.orient("left")
+			.ticks(10);
+
+		//dodavanje SVG elementa
+		var svg = d3.select("body")
+			.append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.bottom + margin.top)
+			.style("background-color", "white")
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		//skaliranje podataka
+		x.domain(data.map(function (d) { return d.Country; }));
+		y.domain([0, d3.max(data, function (d) { return d.Restaurants; })]);
+
+		//dodavanje x-osi
+		svg.append("g")
+			.attr("id", "xos")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis)
+			.selectAll("text")
+			.style("text-anchor", "end")
+			.attr("dx", "-1em")
+			.attr("dy", "-0.5em")
+			.style("font-size", "1.1em")
+			.attr("transform", "rotate(-90)");
+
+		//dodavanje naziva x-osi
+		svg.append("text")
+			.attr("x", (width / 2))
+			.attr("y", (height + (margin.bottom / 2)))
+			.attr("dy", "2em")
+			.style("text-anchor", "middle")
+			.style("font-size", "1.3em")
+			.text("Države");
+
+		//dodavanje y-osi
+		svg.append("g")
+			.attr("id", "yos")
+			.attr("class", "y axis")
+			.call(yAxis)
+			.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 5)
+			.attr("dy", ".71em");
+
+		//dodavanje naziva y-osi
+		svg.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("x", 0 - (height / 2))
+			.attr("y", 0 - margin.left)
+			.attr("dy", "1.5em")
+			.attr("text-anchor", "middle")
+			.style("font-size", "1.5em")
+			.text("Broj restorana");
+
+
+		//dodavanje grafa
+		svg.selectAll("bar")
+			.data(data)
+			.enter()
+			.append("rect")
+			.attr("id", "barchart")
+			.attr("class", "bar")
+			.attr("x", function (d) { return x(d.Country); })
+			.attr("width", x.rangeBand())
+			.attr("fill", function (d, i) { return myColor(i); })
+			.attr("y", function (d) { return y(d.Restaurants); })
+			.attr("height", function (d) { return (height - 1) - y(d.Restaurants); })
+			.style("stroke", "black")
+			.style("stroke-width", 0.2)
+
+		data.sort(function (a, b) {
+			return d3.descending(a.value, b.value)
+		})
+		x.domain(data.map(function (d) {
+			return d.value;
+		}));
+
+		function updateData() {
+			//console.log(dataWithoutSad);
+
+			d3.selectAll("#barchart").remove();
+			d3.selectAll("#xos").remove();
+			d3.selectAll("#yos").remove();
+
+			var x = d3.scale.ordinal()
+				.domain(dataWithoutSad.map(function (d) { return d.Country; }))
+				.rangeRoundBands([0, width], 0.2);
+			var y = d3.scale.linear()
+				.domain([0, d3.max(dataWithoutSad, function (d) { return d.Restaurants; })])
+				.range([height, 0]);
+			var myColor = d3.scale.ordinal()
+				.domain([0, d3.max(dataWithoutSad, function (d) { return d.Country; })])
+				.range(["#e5f5f9", "#99d8c9", "#2ca25f"])
+
+			//definiranje osi
+			var xAxis = d3.svg.axis()
+
+				.scale(x)
+				.orient("bottom")
+
+			var yAxis = d3.svg.axis()
+				.scale(y)
+				.orient("left")
+				.ticks(10);
+
+			x.domain(dataWithoutSad.map(function (d) { return d.Country; }));
+			y.domain([0, d3.max(dataWithoutSad, function (d) { return d.Restaurants; })]);
+
+			//dodavanje x-osi
+			svg.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis)
+				.selectAll("text")
+				.style("text-anchor", "end")
+				.attr("dx", "-1em")
+				.attr("dy", "-0.5em")
+				.style("font-size", "1.1em")
+				.attr("transform", "rotate(-90)");
+
+			//dodavanje naziva x-osi
+			svg.append("text")
+				.attr("x", (width / 2))
+				.attr("y", (height + (margin.bottom / 2)))
+				.attr("dy", "2em")
+				.style("text-anchor", "middle")
+				.style("font-size", "1.3em")
+				.text("Države");
+
+			//dodavanje y-osi
+			svg.append("g")
+				.attr("class", "y axis")
+				.call(yAxis)
+				.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("y", 5)
+				.attr("dy", ".71em");
+
+			//dodavanje naziva y-osi
+			svg.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("x", 0 - (height / 2))
+				.attr("y", 0 - margin.left)
+				.attr("dy", "1.5em")
+				.attr("text-anchor", "middle")
+				.style("font-size", "1.5em")
+				.text("Broj restorana");
+
+			//dodavanje grafa
+			svg.selectAll("bar")
+				.data(dataWithoutSad)
+				.enter()
+				.append("rect")
+				.attr("class", "bar")
+				.attr("x", function (d) { return x(d.Country); })
+				.attr("width", x.rangeBand())
+				.attr("fill", function (d, i) { return myColor(i); })
+				.attr("y", function (d) { return y(d.Restaurants); })
+				.attr("height", function (d) { return (height - 1) - y(d.Restaurants); })
+				.style("stroke", "black")
+				.style("stroke-width", 0.2)
+		}
+
+	</script>
+</body>
+
+</html>

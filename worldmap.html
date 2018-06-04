@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+    <h1 style="text-align:center;">Broj McDonald's restorana po državama</h1>
+    <style type="text/css">
+        .selected {
+            fill: black
+        }
+
+        .tooltip {
+            position: absolute;
+            max-width: 400px;
+            height: auto;
+            padding: 5px;
+            background-color: white;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+            -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="trip_data.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+    
+    <script>
+        var width = window.innerWidth,
+            height = window.innerHeight,
+            centered,
+            clicked_point;
+
+        var projection = d3.geoMercator()
+            .translate([width / 2.2, height / 1.5]);
+
+        var plane_path = d3.geoPath()
+            .projection(projection);
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("class", "map");
+
+        d3.select("body").append("div")
+            .attr("id", "nesto");
+
+        var g = svg.append("g");
+        var path = d3.geoPath()
+            .projection(projection);
+
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0)
+            .style("width", 600);
+
+        // load and display the World
+        d3.json("world.json", function (error, topology) {
+            g.selectAll("path")
+                .data(topojson.feature(topology, topology.objects.countries)
+                    .features)
+                .enter()
+                .append("path")
+                .attr("d", path)
+                .style("fill", "lightgray")
+                .style("stroke", "black")
+                .style("stroke-width", 0.5)
+
+                .on("mouseover", function (d) {
+                    let country = d3.select(this).style('fill', "#99d8c9")
+                    var tip = "<h3>" + br_restorana.filter(function (dd) { return d.properties.name == dd.Country })[0].Country + ": "
+                    + br_restorana.filter(function (dd) { return d.properties.name == dd.Country })[0].Restaurants + "</h3>";
+                    tooltip.html(tip)
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY) + "px");
+
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", .7);
+
+                })
+                .on("mouseout", function (d) {
+                    d3.select(this).style('fill', 'lightgray')
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+        });
+
+
+
+        var br_restorana =
+            [{ "Country": "Afghanistan", "Restaurants": 0 },
+            { "Country": "Albania", "Restaurants": 0 },
+            { "Country": "Algeria", "Restaurants": 0 },
+            { "Country": "Anguilla", "Restaurants": 0 },
+            { "Country": "Antigua and Barbuda", "Restaurants": 0 },
+            { "Country": "Andorra", "Restaurants": 2 },
+            { "Country": "Angola", "Restaurants": 0 },
+            { "Country": "Argentina", "Restaurants": 209 },
+            { "Country": "Armenia", "Restaurants": 0 },
+            { "Country": "Aruba", "Restaurants": 4 },
+            { "Country": "Australia", "Restaurants": 920 },
+            { "Country": "Austria", "Restaurants": 196 },
+            { "Country": "Azerbaijan", "Restaurants": 12 },
+            { "Country": "Bahamas", "Restaurants": 3 },
+            { "Country": "Bahrain", "Restaurants": 20 },
+            { "Country": "Bangladesh", "Restaurants": 0 },
+            { "Country": "Barbados", "Restaurants": 0 },
+            { "Country": "Belarus", "Restaurants": 13 },
+            { "Country": "Belgium", "Restaurants": 74 },
+            { "Country": "Belize", "Restaurants": 0 },
+            { "Country": "Benin", "Restaurants": 0 },
+            { "Country": "Bermuda", "Restaurants": 0 },
+            { "Country": "Bhutan", "Restaurants": 0 },
+            { "Country": "Bolivia", "Restaurants": 1 },
+            { "Country": "Bonaire", "Restaurants": 3.33 },
+            { "Country": "Bosnia and Herzegovina", "Restaurants": 4 },
+            { "Country": "Botswana", "Restaurants": 0 },
+            { "Country": "Brazil", "Restaurants": 812 },
+            { "Country": "British Virgin Islands", "Restaurants": 0 },
+            { "Country": "Brunei", "Restaurants": 2 },
+            { "Country": "Bulgaria", "Restaurants": 42 },
+            { "Country": "Burkina Faso", "Restaurants": 0 },
+            { "Country": "Burma", "Restaurants": 0 },
+            { "Country": "Burundi", "Restaurants": 0 },
+            { "Country": "Cambodia", "Restaurants": 0 },
+            { "Country": "Cameroon", "Restaurants": 0 },
+            { "Country": "Canada", "Restaurants": 1450 },
+            { "Country": "Cape Verde", "Restaurants": 0 },
+            { "Country": "Cayman Islands", "Restaurants": 0 },
+            { "Country": "Central African Republic", "Restaurants": 0 },
+            { "Country": "Chad", "Restaurants": 0 },
+            { "Country": "Chile", "Restaurants": 77 },
+            { "Country": "China", "Restaurants": 2391 },
+            { "Country": "Colombia", "Restaurants": 81 },
+            { "Country": "Congo", "Restaurants": 0 },
+            { "Country": "Congo DR", "Restaurants": 0 },
+            { "Country": "Costa Rica", "Restaurants": 54 },
+            { "Country": "Croatia", "Restaurants": 30 },
+            { "Country": "Cuba", "Restaurants": 1 },
+            { "Country": "Curaçao", "Restaurants": 5 },
+            { "Country": "Cyprus", "Restaurants": 18 },
+            { "Country": "Czech Republic", "Restaurants": 95 },
+            { "Country": "Denmark", "Restaurants": 89 },
+            { "Country": "Djibouti", "Restaurants": 0 },
+            { "Country": "Dominica", "Restaurants": 0 },
+            { "Country": "Dominican Republic", "Restaurants": 31 },
+            { "Country": "Ecuador", "Restaurants": 27 },
+            { "Country": "Egypt", "Restaurants": 100 },
+            { "Country": "El Salvador", "Restaurants": 13 },
+            { "Country": "Eritrea", "Restaurants": 0 },
+            { "Country": "Estonia", "Restaurants": 10 },
+            { "Country": "Ethiopia", "Restaurants": 0 },
+            { "Country": "Equatorial Guinea", "Restaurants": 0 },
+            { "Country": "Fiji", "Restaurants": 4 },
+            { "Country": "Finland", "Restaurants": 65 },
+            { "Country": "France", "Restaurants": 1419 },
+            { "Country": "French Guiana", "Restaurants": 2 },
+            { "Country": "French Polynesia", "Restaurants": 6 },
+            { "Country": "Gabon", "Restaurants": 0 },
+            { "Country": "Gambia", "Restaurants": 0 },
+            { "Country": "Georgia", "Restaurants": 11 },
+            { "Country": "Germany", "Restaurants": 1470 },
+            { "Country": "Ghana", "Restaurants": 0 },
+            { "Country": "Gibraltar", "Restaurants": 1 },
+            { "Country": "Greece", "Restaurants": 24 },
+            { "Country": "Greenland", "Restaurants": 0 },
+            { "Country": "Grenada", "Restaurants": 0 },
+            { "Country": "Guadeloupe", "Restaurants": 8 },
+            { "Country": "Guam", "Restaurants": 6 },
+            { "Country": "Guatemala", "Restaurants": 82 },
+            { "Country": "Guinea", "Restaurants": 0 },
+            { "Country": "Guinea Bissau", "Restaurants": 0 },
+            { "Country": "Guyana", "Restaurants": 0 },
+            { "Country": "Haiti", "Restaurants": 0 },
+            { "Country": "Honduras", "Restaurants": 8 },
+            { "Country": "Hong Kong", "Restaurants": 237 },
+            { "Country": "Hungary", "Restaurants": 90 },
+            { "Country": "Iceland", "Restaurants": 0 },
+            { "Country": "India", "Restaurants": 290 },
+            { "Country": "Indonesia", "Restaurants": 170 },
+            { "Country": "Iran", "Restaurants": 0 },
+            { "Country": "Iraq", "Restaurants": 1 },
+            { "Country": "Ireland", "Restaurants": 89 },
+            { "Country": "Isle Of Man", "Restaurants": 1 },
+            { "Country": "Israel", "Restaurants": 185 },
+            { "Country": "Italy", "Restaurants": 548 },
+            { "Country": "Ivory Coast", "Restaurants": 0 },
+            { "Country": "Jamaica", "Restaurants": 0 },
+            { "Country": "Japan", "Restaurants": 2957 },
+            { "Country": "Jersey", "Restaurants": 1 },
+            { "Country": "Jordan", "Restaurants": 28 },
+            { "Country": "Kazakhstan", "Restaurants": 9 },
+            { "Country": "Kenya", "Restaurants": 0 },
+            { "Country": "Kyrgyzstan", "Restaurants": 0 },
+            { "Country": "Kosovo", "Restaurants": 0 },
+            { "Country": "Kuwait", "Restaurants": 75 },
+            { "Country": "Laos", "Restaurants": 0 },
+            { "Country": "Latvia", "Restaurants": 12 },
+            { "Country": "Liberia", "Restaurants": 0 },
+            { "Country": "Libya", "Restaurants": 0 },
+            { "Country": "Lebanon", "Restaurants": 33 },
+            { "Country": "Lesotho", "Restaurants": 0 },
+            { "Country": "Liechestein", "Restaurants": 3 },
+            { "Country": "Lithuania", "Restaurants": 11 },
+            { "Country": "Luxembourg", "Restaurants": 10 },
+            { "Country": "Macedonia", "Restaurants": 0 },
+            { "Country": "Madagascar", "Restaurants": 0 },
+            { "Country": "Malaysia", "Restaurants": 314 },
+            { "Country": "Malawi", "Restaurants": 0 },
+            { "Country": "Mali", "Restaurants": 0 },
+            { "Country": "Malta", "Restaurants": 10 },
+            { "Country": "Martinique", "Restaurants": 9 },
+            { "Country": "Mauritania", "Restaurants": 7 },
+            { "Country": "Mexico", "Restaurants": 402 },
+            { "Country": "Moldova", "Restaurants": 4 },
+            { "Country": "Monaco", "Restaurants": 2 },
+            { "Country": "Montenegro", "Restaurants": 0 },
+            { "Country": "Montserrat", "Restaurants": 0 },
+            { "Country": "Morocco", "Restaurants": 40 },
+            { "Country": "Mozambique", "Restaurants": 0 },
+            { "Country": "Myanmar", "Restaurants": 0 },
+            { "Country": "Namibia", "Restaurants": 0 },
+            { "Country": "Nepal", "Restaurants": 0 },
+            { "Country": "Netherlands", "Restaurants": 245 },
+            { "Country": "New Caledonia", "Restaurants": 2 },
+            { "Country": "New Zealand", "Restaurants": 162 },
+            { "Country": "Nicaragua", "Restaurants": 6 },
+            { "Country": "Niger", "Restaurants": 0 },
+            { "Country": "Nigeria", "Restaurants": 0 },
+            { "Country": "North Korea", "Restaurants": 5 },
+            { "Country": "Nothern Marianis", "Restaurants": 2 },
+            { "Country": "Norway", "Restaurants": 73 },
+            { "Country": "Oman", "Restaurants": 15 },
+            { "Country": "Pakistan", "Restaurants": 72 },
+            { "Country": "Palestine (West Bank)", "Restaurants": 0 },
+            { "Country": "Panama", "Restaurants": 57 },
+            { "Country": "Papua New Guinea", "Restaurants": 0 },
+            { "Country": "Paraguay", "Restaurants": 11 },
+            { "Country": "Peru", "Restaurants": 40 },
+            { "Country": "Philippines", "Restaurants": 572 },
+            { "Country": "Poland", "Restaurants": 400 },
+            { "Country": "Portugal", "Restaurants": 148 },
+            { "Country": "Puerto Rico", "Restaurants": 108 },
+            { "Country": "Qatar", "Restaurants": 25 },
+            { "Country": "Reunion", "Restaurants": 1419 },
+            { "Country": "Romania", "Restaurants": 70 },
+            { "Country": "Russia", "Restaurants": 645 },
+            { "Country": "Rwanda", "Restaurants": 0 },
+            { "Country": "Samoa", "Restaurants": 1 },
+            { "Country": "San Marino", "Restaurants": 1 },
+            { "Country": "Saudi Arabia", "Restaurants": 224 },
+            { "Country": "Senegal", "Restaurants": 0 },
+            { "Country": "Serbia", "Restaurants": 30 },
+            { "Country": "Sierra Leone", "Restaurants": 0 },
+            { "Country": "Singapore", "Restaurants": 136 },
+            { "Country": "Sint Maarten", "Restaurants": 3 },
+            { "Country": "Slovakia", "Restaurants": 30 },
+            { "Country": "Slovenia", "Restaurants": 20 },
+            { "Country": "Somalia", "Restaurants": 0 },
+            { "Country": "South Africa", "Restaurants": 225 },
+            { "Country": "South Korea", "Restaurants": 450 },
+            { "Country": "Spain", "Restaurants": 497 },
+            { "Country": "Sri Lanka", "Restaurants": 7 },
+            { "Country": "St Kitts and Nevis", "Restaurants": 0 },
+            { "Country": "St Lucia", "Restaurants": 0 },
+            { "Country": "St Vincent and the Grenadines", "Restaurants": 0 },
+            { "Country": "Sudan", "Restaurants": 0 },
+            { "Country": "Suriname", "Restaurants": 2 },
+            { "Country": "Swaziland", "Restaurants": 0 },
+            { "Country": "Sweden", "Restaurants": 225 },
+            { "Country": "Switzerland", "Restaurants": 162 },
+            { "Country": "Syria", "Restaurants": 0 },
+            { "Country": "Taiwan", "Restaurants": 413 },
+            { "Country": "Tajikistan", "Restaurants": 0 },
+            { "Country": "Tanzania", "Restaurants": 0 },
+            { "Country": "Togo", "Restaurants": 0 },
+            { "Country": "Thailand", "Restaurants": 240 },
+            { "Country": "Trinidad and Tobago", "Restaurants": 6 },
+            { "Country": "Tunisia", "Restaurants": 1 },
+            { "Country": "Turks and Caicos", "Restaurants": 0 },
+            { "Country": "Turkey", "Restaurants": 255 },
+            { "Country": "Turkmenistan", "Restaurants": 0 },
+            { "Country": "UAE", "Restaurants": 0 },
+            { "Country": "Uganda", "Restaurants": 0 },
+            { "Country": "Ukraine", "Restaurants": 80 },
+            { "Country": "United Arab Emirates", "Restaurants": 114 },
+            { "Country": "United Kingdom", "Restaurants": 1274 },
+            { "Country": "United States", "Restaurants": 14146 },
+            { "Country": "Uruguay", "Restaurants": 21 },
+            { "Country": "Uzbekistan", "Restaurants": 0 },
+            { "Country": "Venezuela", "Restaurants": 140 },
+            { "Country": "Vietnam", "Restaurants": 17 },
+            { "Country": "Western Sahara", "Restaurants": 0 },
+            { "Country": "Yemen", "Restaurants": 0 },
+            { "Country": "Zambia", "Restaurants": 0 }]
+
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0)
+            .style("width", 600)
+            .on("mouseover", function (d) {
+                var tip = "<h3>" + (d.properties.name == dd.Country) + "</h3>";
+                tooltip.html(tip)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY) + "px");
+
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", .7);
+
+            })
+            .on("mouseout", function (d) {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
+
+    </script>
+</body>
+
+</html>
